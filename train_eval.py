@@ -22,6 +22,7 @@ def do_train(model, train_loader, criterion, optimizer, epoch, output_dir, best_
         assert ckpt['best_metric'] == best_metric, 'best metric mismatch'
         best_metric_value = ckpt['best_metric_value']
         model.load_state_dict(ckpt['model_state_dict'])
+        model.to(device)
         optimizer.load_state_dict(ckpt['optimizer_state_dict'])
         if scheduler:
             scheduler.load_state_dict(ckpt['scheduler_state_dict'] if ckpt['scheduler_state_dict'] else None)

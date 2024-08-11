@@ -1,6 +1,7 @@
 from config import *
 from datasets import num_classes_dict
 from networks import network_dict
+from activation import af_dict
 from torch.utils.data import DataLoader
 from torch import nn, optim
 from torchvision import transforms
@@ -35,7 +36,7 @@ def main(args):
                 # transforms.Normalize((0.5,), (0.5,)),
                 # transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)), # ImageNet normalization
                 transforms.Normalize((0.7862, 0.6261, 0.7654), (0.1065, 0.1396, 0.0910)), # BreakHis normalization
-                transforms.Resize((460, 700), antialias=True)
+                transforms.Resize((224, 224), antialias=True)  # default => (460, 700)
             ]
         )
     
@@ -50,6 +51,8 @@ def main(args):
     
     num_classes = num_classes_dict[args.task]
     model = network_dict[args.net](num_classes=num_classes)
+    activation_function = af_dict[args.activation]
+    activation_function.replace_activation_function(model)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.AdamW(model.parameters(), lr=args.lr)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
@@ -116,6 +119,7 @@ if __name__ == '__main__':
     parser.add_argument('--task', type=str, required=True, help='task type')
     parser.add_argument('--net', type=str, required=True, help='network class')
     parser.add_argument('--output_dir', type=str, required=True, help='output directory')
+    parser.add_argument('--activation', type=str, required=True, help='activation function')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
     parser.add_argument('--epoch', type=int, default=20, help='epoch')
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate')
@@ -125,5 +129,6 @@ if __name__ == '__main__':
     parser.add_argument('--eval', action='store_true', help='evaluate only')
     parser.add_argument('--best_metric', type=str, default='auroc', help='metric to determine best ckpt')
     parser.add_argument('--da', action='store_true', help='use data augmentation')
+    
     args = parser.parse_args()
     main(args)

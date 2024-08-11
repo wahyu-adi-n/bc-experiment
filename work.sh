@@ -1,8 +1,9 @@
 python main.py \
     --task binary \
     --net ResNet50 \
+    --activation ReLU \
     --output_dir ./output/Select/ResNet50-bin \
-    --batch_size 4 \
+    --batch_size 32 \
     --lr 1e-4 \
     --resume
 

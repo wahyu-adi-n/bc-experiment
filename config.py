@@ -12,3 +12,6 @@ MY_FOLD_CSV = './dataset/BreaKHis_v1/mysplit.csv'
 SEED = 123
 STEP_SIZE = 1
 GAMMA = 0.8
+
+# activation.py
+SAVE_AFS_PLOTTING = './artifact/afs_plot'

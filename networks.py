@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torchvision.models as models
+from activation import *
 
 
 class ResNet50(nn.Module):
@@ -116,3 +117,9 @@ network_dict = {
     'VGG19_bn': VGG19_bn,
     'ResNeXt_101_32x8d': ResNeXt_101_32x8d
 }
+
+if __name__ == '__main__':
+    model  = network_dict['ResNet50'](2)
+    # Usage
+    afs = ActivationFunction(LeakyReLU()).replace_activation_function(model)
+    print(model)
