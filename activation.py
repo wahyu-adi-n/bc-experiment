@@ -1,10 +1,9 @@
 from config import SAVE_AFS_PLOTTING
+import matplotlib.pyplot as plt
 import os
 import shutil
 import torch
 import torch.nn as nn
-import matplotlib.pyplot as plt
-
 
 class ReLU(nn.Module):
     def __init__(self):
@@ -46,7 +45,6 @@ class ActivationFunction():
                 self.replace_activation_function(module)
 
     def plot_activaition_function(self):
-        # Plot the Swish Activation Function
         if not os.path.exists(SAVE_AFS_PLOTTING):
             os.makedirs(SAVE_AFS_PLOTTING)
         plt.figure(figsize=(12, 8))
@@ -55,22 +53,18 @@ class ActivationFunction():
         plt.title(f'{self.activation_module.name} Activation Function')
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.savefig(f'{SAVE_AFS_PLOTTING}/{self.activation_module.name} Activation Function Plotting.png', format='png')
-        # plt.show()
+        plt.savefig(f'{SAVE_AFS_PLOTTING}/{self.activation_module.name} Activation Function Plotting.png', 
+                    format='png')
         plt.close()
 
-af_dict = {    
+activation_dict = {    
                         'ReLU': ActivationFunction(ReLU()),
                         'LeakyReLU' : ActivationFunction(LeakyReLU()),
-                        'ParametricReLU_0.1': ActivationFunction(ParametricRELU(0.1)), 
-                        'ParametricReLU_0.2': ActivationFunction(ParametricRELU(0.2)), 
-                        'ParametricReLU_0.3': ActivationFunction(ParametricRELU(0.3)), 
-                        'ParametricReLU_0.4': ActivationFunction(ParametricRELU(0.4)), 
-                        'ParametricReLU_0.5': ActivationFunction(ParametricRELU(0.5)), 
-                        'ParametricReLU_0.6': ActivationFunction(ParametricRELU(0.6)), 
-                        'ParametricReLU_0.7': ActivationFunction(ParametricRELU(0.7)), 
-                        'ParametricReLU_0.8': ActivationFunction(ParametricRELU(0.8)), 
-                        'ParametricReLU_0.9': ActivationFunction(ParametricRELU(0.9)), 
+                        'ParametricReLU_0.1': ActivationFunction(ParametricRELU(0.1)),
+                        'ParametricReLU_0.3': ActivationFunction(ParametricRELU(0.2)), 
+                        'ParametricReLU_0.5': ActivationFunction(ParametricRELU(0.3)), 
+                        'ParametricReLU_0.7': ActivationFunction(ParametricRELU(0.4)),  
+                        'ParametricReLU_0.9': ActivationFunction(ParametricRELU(0.5)), 
                     }
     
 if __name__ == '__main__':
@@ -85,10 +79,6 @@ if __name__ == '__main__':
                             ActivationFunction(ParametricRELU(0.3)),
                             ActivationFunction(ParametricRELU(0.4)),
                             ActivationFunction(ParametricRELU(0.5)),
-                            ActivationFunction(ParametricRELU(0.6)),
-                            ActivationFunction(ParametricRELU(0.7)),
-                            ActivationFunction(ParametricRELU(0.8)),
-                            ActivationFunction(ParametricRELU(0.9)),
                         ]
     for afs in activation_funtions:
         afs.plot_activaition_function()

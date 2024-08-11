@@ -1,7 +1,6 @@
+from activation import *
 import torch.nn as nn
 import torchvision.models as models
-from activation import *
-
 
 class ResNet50(nn.Module):
     def __init__(self, num_classes):
@@ -16,7 +15,6 @@ class ResNet50(nn.Module):
     def forward(self, x):
         x = self.resnet(x)
         return x
-    
 
 class ResNet152(nn.Module):
     def __init__(self, num_classes):
@@ -32,7 +30,6 @@ class ResNet152(nn.Module):
         x = self.resnet(x)
         return x
 
-
 class DenseNet121(nn.Module):
     def __init__(self, num_classes):
         super(DenseNet121, self).__init__()
@@ -46,7 +43,6 @@ class DenseNet121(nn.Module):
     def forward(self, x):
         x = self.densenet(x)
         return x
-    
 
 class DenseNet201(nn.Module):
     def __init__(self, num_classes):
@@ -60,8 +56,7 @@ class DenseNet201(nn.Module):
         
     def forward(self, x):
         x = self.densenet(x)
-        return x
-    
+        return x 
 
 class VGG11(nn.Module):
     def __init__(self, num_classes):
@@ -77,7 +72,6 @@ class VGG11(nn.Module):
         x = self.vgg11(x)
         return x
 
-
 class VGG19(nn.Module):
     def __init__(self, num_classes):
         super(VGG19, self).__init__()
@@ -90,8 +84,7 @@ class VGG19(nn.Module):
         
     def forward(self, x):
         x = self.vgg19(x)
-        return x
-    
+        return x 
 
 network_dict = {
     'ResNet50': ResNet50,
@@ -104,6 +97,5 @@ network_dict = {
 
 if __name__ == '__main__':      
     model  = network_dict['ResNet50'](2)
-    # Usage
     afs = ActivationFunction(LeakyReLU()).replace_activation_function(model)
     print(model)

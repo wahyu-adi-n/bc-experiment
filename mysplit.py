@@ -32,12 +32,11 @@ def dump_myfold_csv():
                             'path':img.path.removeprefix('./dataset/BreaKHis_v1/')})
 
     df = pd.DataFrame(data_list)
-    df.to_csv(MY_FOLD_CSV, index=False)
-
+    df.to_csv(FOLD_CSV_DIR, index=False)
 
 def statistic_myfold():
     # Load the CSV file into a pandas DataFrame
-    df = pd.read_csv(MY_FOLD_CSV)
+    df = pd.read_csv(FOLD_CSV_DIR)
 
     # Group the data by mag_grp and tumor_type, and count the number of occurrences
     counts = df.groupby(['mag_grp', 'tumor_type']).size().reset_index(name='count')
@@ -62,7 +61,7 @@ def statistic_myfold():
     table = table[['A', 'F', 'PT', 'TA', 'B', 'DC', 'LC', 'MC', 'PC', 'M', 'total']]
 
     # dump the table to a new CSV file
-    table.to_csv('artifact/tumor_table.csv')
+    table.to_csv(FOLD_STAT_DIR)
 
 if __name__ == '__main__':
     dump_myfold_csv()

@@ -2,5 +2,4 @@
 /dataset
 /output
 README.md
-*.csv
 __pycache__

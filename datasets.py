@@ -1,7 +1,8 @@
+from config import CSV_PATH, DATASET_ROOT
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor
-from config import *
+
 import os
 import pandas as pd
 import re

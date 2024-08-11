@@ -1,10 +1,10 @@
-from torchvision import transforms
-from tqdm import tqdm
 from config import *
+from torchvision import transforms as T
+from tqdm import tqdm
 import datasets
 import torch
 
-dataset = datasets.BreaKHis('binary', 'train', magnification=None, transform=transforms.ToTensor())
+dataset = datasets.BreaKHis('binary', 'train', magnification=None, transform=T.ToTensor())
 full_loader = torch.utils.data.DataLoader(dataset, shuffle=False, num_workers=8)
 
 mean = torch.zeros(3)

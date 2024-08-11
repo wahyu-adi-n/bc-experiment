@@ -1,12 +1,12 @@
-from tqdm import tqdm
+from config import DEVICE
 from torch.utils.tensorboard import SummaryWriter
 from torchmetrics.classification import MulticlassF1Score, MulticlassAccuracy, MulticlassPrecision, \
                                         MulticlassRecall, MulticlassAUROC, MulticlassConfusionMatrix
-                                        
+from tqdm import tqdm                              
 import os
 import torch
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = DEVICE
 
 def do_train(model, train_loader, criterion, optimizer, epoch, output_dir, best_metric,
             scheduler = None, val_loader = None, ckpt = None, resume = False):
