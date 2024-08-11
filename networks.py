@@ -78,33 +78,18 @@ class VGG11(nn.Module):
         return x
 
 
-class VGG19_bn(nn.Module):
+class VGG19(nn.Module):
     def __init__(self, num_classes):
-        super(VGG19_bn, self).__init__()
+        super(VGG19, self).__init__()
         self.num_classes = num_classes
         
-        self.vgg19_bn = models.vgg19_bn(weights=models.VGG19_BN_Weights.DEFAULT)
+        self.vgg19 = models.vgg19(weights=models.VGG19_Weights.DEFAULT)
         
-        num_features = self.vgg19_bn.classifier[6].in_features
-        self.vgg19_bn.classifier[6] = nn.Linear(num_features, num_classes)
+        num_features = self.vgg19.classifier[6].in_features
+        self.vgg19.classifier[6] = nn.Linear(num_features, num_classes)
         
     def forward(self, x):
-        x = self.vgg19_bn(x)
-        return x
-
-
-class ResNeXt_101_32x8d(nn.Module):
-    def __init__(self, num_classes):
-        super(ResNeXt_101_32x8d, self).__init__()
-        self.num_classes = num_classes
-        
-        self.resnext = models.resnext101_32x8d(weights=models.ResNeXt101_32X8D_Weights.DEFAULT)
-        
-        num_features = self.resnext.fc.in_features
-        self.resnext.fc = nn.Linear(num_features, num_classes)
-
-    def forward(self, x):
-        x = self.resnext(x)
+        x = self.vgg19(x)
         return x
     
 
@@ -114,11 +99,10 @@ network_dict = {
     'DenseNet121': DenseNet121,
     'DenseNet201': DenseNet201,
     'VGG11': VGG11,
-    'VGG19_bn': VGG19_bn,
-    'ResNeXt_101_32x8d': ResNeXt_101_32x8d
+    'VGG19': VGG19,
 }
 
-if __name__ == '__main__':
+if __name__ == '__main__':      
     model  = network_dict['ResNet50'](2)
     # Usage
     afs = ActivationFunction(LeakyReLU()).replace_activation_function(model)

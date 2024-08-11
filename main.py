@@ -54,7 +54,7 @@ def main(args):
     activation_function = af_dict[args.activation]
     activation_function.replace_activation_function(model)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.AdamW(model.parameters(), lr=args.lr)
+    optimizer = optim.Adam(model.parameters(), lr=args.lr)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
 
     train_dataset = datasets.BreaKHis(args.task, 'train', magnification = args.mag, transform=data_transform)
@@ -82,7 +82,7 @@ def main(args):
     T1 = time.time()
     loss, _, _, _, metrics = do_eval(model, test_loader, ckpt_path=ckpt_path)
     T2 = time.time()
-    with open('test_infer_time.csv', 'a') as f:
+    with open('artifact/test_infer_time.csv', 'a') as f:
         f.write(f'{args.output_dir}, {T2-T1}\n')
     with open(os.path.join(args.output_dir, 'result.txt'), 'w') as f:
         f.write('results on test set:\n')
@@ -94,7 +94,7 @@ def main(args):
         f.write(f'auroc: {metrics["auroc"]}\n')
         f.write(f'confusion matrix:\n')
         f.write(f'{metrics["confusion_matrix"]}\n')
-    with open('result.csv', 'a') as f:
+    with open('artifact/result.csv', 'a') as f:
         f.write(f'{args.output_dir},' +
                 f'{metrics["acc"]["macro"]}, {metrics["acc"]["micro"]}, ' +
                 f'{metrics["precision"]["macro"]}, {metrics["precision"]["micro"]}, ' +

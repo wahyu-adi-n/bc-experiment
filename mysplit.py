@@ -62,7 +62,7 @@ def statistic_myfold():
     table = table[['A', 'F', 'PT', 'TA', 'B', 'DC', 'LC', 'MC', 'PC', 'M', 'total']]
 
     # dump the table to a new CSV file
-    table.to_csv('tumor_table.csv')
+    table.to_csv('artifact/tumor_table.csv')
 
 if __name__ == '__main__':
     dump_myfold_csv()

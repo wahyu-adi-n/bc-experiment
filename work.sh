@@ -108,16 +108,16 @@ python main.py \
 
 python main.py \
     --task binary \
-    --net VGG19_bn \
-    --output_dir ./output/Select/VGG19_bn-bin \
+    --net VGG19 \
+    --output_dir ./output/Select/VGG19-bin \
     --batch_size 16 \
     --lr 1e-5 \
     --resume
 
 python main.py \
     --task subtype \
-    --net VGG19_bn \
-    --output_dir ./output/Select/VGG19_bn-sub \
+    --net VGG19 \
+    --output_dir ./output/Select/VGG19-sub \
     --batch_size 16 \
     --lr 1e-4 \
     --resume

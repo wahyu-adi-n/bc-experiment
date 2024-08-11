@@ -81,6 +81,14 @@ if __name__ == '__main__':
                             ActivationFunction(ReLU()), 
                             ActivationFunction(LeakyReLU()), 
                             ActivationFunction(ParametricRELU(0.1)),
+                            ActivationFunction(ParametricRELU(0.2)),
+                            ActivationFunction(ParametricRELU(0.3)),
+                            ActivationFunction(ParametricRELU(0.4)),
+                            ActivationFunction(ParametricRELU(0.5)),
+                            ActivationFunction(ParametricRELU(0.6)),
+                            ActivationFunction(ParametricRELU(0.7)),
+                            ActivationFunction(ParametricRELU(0.8)),
+                            ActivationFunction(ParametricRELU(0.9)),
                         ]
     for afs in activation_funtions:
         afs.plot_activaition_function()
