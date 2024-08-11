@@ -61,10 +61,10 @@ activation_dict = {
                         'ReLU': ActivationFunction(ReLU()),
                         'LeakyReLU' : ActivationFunction(LeakyReLU()),
                         'ParametricReLU_0.1': ActivationFunction(ParametricRELU(0.1)),
-                        'ParametricReLU_0.3': ActivationFunction(ParametricRELU(0.2)), 
-                        'ParametricReLU_0.5': ActivationFunction(ParametricRELU(0.3)), 
-                        'ParametricReLU_0.7': ActivationFunction(ParametricRELU(0.4)),  
-                        'ParametricReLU_0.9': ActivationFunction(ParametricRELU(0.5)), 
+                        'ParametricReLU_0.2': ActivationFunction(ParametricRELU(0.2)), 
+                        'ParametricReLU_0.3': ActivationFunction(ParametricRELU(0.3)), 
+                        'ParametricReLU_0.4': ActivationFunction(ParametricRELU(0.4)),  
+                        'ParametricReLU_0.5': ActivationFunction(ParametricRELU(0.5)), 
                     }
     
 if __name__ == '__main__':
