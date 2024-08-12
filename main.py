@@ -1,9 +1,11 @@
 from activation import activation_dict
 from config import GAMMA, SEED, STEP_SIZE
 from datasets import num_classes_dict
+from datetime import datetime
 from networks import network_dict
 from torch.utils.data import DataLoader
 from torch import nn, optim
+from torchinfo import summary
 from torchvision import transforms as T
 from train_eval import do_train, do_eval
 
@@ -32,7 +34,8 @@ def main(args):
 
     data_transform = T.Compose(
             [
-                T.Resize((224, 224), antialias=True),  # default => (460, 700)
+                T.Resize((256, 256), antialias=True),  # default => (460, 700)
+                T.CenterCrop(size=(224, 224)),
                 T.RandomHorizontalFlip(p=0.5),
                 T.RandomVerticalFlip(p=0.5),
                 T.ToTensor(),
@@ -46,6 +49,11 @@ def main(args):
     model = network_dict[args.net](num_classes=num_classes)
     activation_function = activation_dict[args.activation]
     activation_function.replace_activation_function(model)
+    summary(model, 
+            (3, 224, 224), 
+            batch_dim = 0, 
+            col_names = ('input_size', 'output_size', 'num_params', 'kernel_size', 'mult_adds'), 
+            verbose = 1)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
@@ -88,7 +96,8 @@ def main(args):
         f.write(f'confusion matrix:\n')
         f.write(f'{metrics["confusion_matrix"]}\n')
     with open('artifact/result.csv', 'a') as f:
-        f.write(f'{args.output_dir},' +
+        f.write(f'{str(args.output_dir).split("/")[-1]},' +
+                f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")},' +
                 f'{metrics["acc"]["macro"]}, {metrics["acc"]["micro"]}, ' +
                 f'{metrics["precision"]["macro"]}, {metrics["precision"]["micro"]}, ' +
                 f'{metrics["recall"]["macro"]}, {metrics["recall"]["micro"]}, ' +
