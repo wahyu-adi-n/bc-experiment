@@ -46,6 +46,7 @@ def main(args):
     model = network_dict[args.net](num_classes=num_classes)
     activation_function = activation_dict[args.activation]
     activation_function.replace_activation_function(model)
+    print(model)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
@@ -114,7 +115,7 @@ if __name__ == '__main__':
     parser.add_argument('--output_dir', type=str, required=True, help='output directory')
     parser.add_argument('--activation', type=str, required=True, help='activation function')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
-    parser.add_argument('--epoch', type=int, default=1, help='epoch')
+    parser.add_argument('--epoch', type=int, default=20, help='epoch')
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate')
     parser.add_argument('--mag', type=int, default=None, help='magnification')
     parser.add_argument('--ckpt', type=str, default=None, help='checkpoint path')
