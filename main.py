@@ -46,7 +46,6 @@ def main(args):
     model = network_dict[args.net](num_classes=num_classes)
     activation_function = activation_dict[args.activation]
     activation_function.replace_activation_function(model)
-    print(model)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
