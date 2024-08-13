@@ -1,4 +1,4 @@
-from config import CSV_PATH, DATASET_ROOT
+from config import CSV_PATH, DATASET_ROOT, BINARY_LABEL_DICT, SUBTYPE_LABEL_DICT, MAGNIFICATION_DICT, LABEL_DICTS
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor
@@ -35,9 +35,6 @@ class image_data:
 
 class BreaKHis_generate(Dataset):
 
-    BINARY_LABEL_DICT  = {'B':0, 'M':1}
-    SUBTYPE_LABEL_DICT = {'A':0, 'F':1, 'PT':2, 'TA':3, 'DC':4, 'LC':5, 'MC':6, 'PC':7}
-    MAGNIFICATION_DICT = {'40':0, '100':1, '200':2, '400':3}
     LABEL_DICT = {'binary':BINARY_LABEL_DICT, 'subtype':SUBTYPE_LABEL_DICT, 'magnification':MAGNIFICATION_DICT}
 
     def __init__(self, task_type, group, magnification = None, transform = None, filter = True):
@@ -113,12 +110,7 @@ class BreaKHis_generate(Dataset):
    
 
 class BreaKHis(Dataset):
-
-    BINARY_LABEL_DICT  = {'B':0, 'M':1}
-    SUBTYPE_LABEL_DICT = {'A':0, 'F':1, 'PT':2, 'TA':3, 'DC':4, 'LC':5, 'MC':6, 'PC':7}
-    MAGNIFICATION_DICT = {'40':0, '100':1, '200':2, '400':3}
-    LABEL_DICT = {'binary':BINARY_LABEL_DICT, 'subtype':SUBTYPE_LABEL_DICT, 'magnification':MAGNIFICATION_DICT}
-
+    LABEL_DICT = LABEL_DICTS
     def __init__(self, task_type, group, magnification = None, transform = None, split_csv = CSV_PATH):
         assert task_type in ['binary', 'subtype', 'magnification'], 'task_type must be one of [binary, subtype, magnification]'
         assert group in ['train', 'val', 'test'], 'group must be one of [train, val, test]'

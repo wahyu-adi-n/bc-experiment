@@ -21,10 +21,10 @@ class LeakyReLU(nn.Module):
     def forward(self, x, a = 0.01):
         return torch.maximum(x*a, x)
 
-class ParametricRELU(nn.Module):
+class LessNegativeReLU(nn.Module):
     def __init__(self, a):
-        super(ParametricRELU, self).__init__()
-        self.name = f'ParametricRELU {a}'
+        super(LessNegativeReLU, self).__init__()
+        self.name = f'LessNegativeReLU {a}'
         self.a = a
         
     def forward(self, x):
@@ -60,11 +60,10 @@ class ActivationFunction():
 activation_dict = {    
                         'ReLU': ActivationFunction(ReLU()),
                         'LeakyReLU' : ActivationFunction(LeakyReLU()),
-                        'ParametricReLU_0.1': ActivationFunction(ParametricRELU(0.1)),
-                        'ParametricReLU_0.2': ActivationFunction(ParametricRELU(0.2)), 
-                        'ParametricReLU_0.3': ActivationFunction(ParametricRELU(0.3)), 
-                        'ParametricReLU_0.4': ActivationFunction(ParametricRELU(0.4)),  
-                        'ParametricReLU_0.5': ActivationFunction(ParametricRELU(0.5)), 
+                        'LessNegativeReLU_0.03': ActivationFunction(LessNegativeReLU(0.03)),
+                        'LessNegativeReLU_0.05': ActivationFunction(LessNegativeReLU(0.05)),
+                        'LessNegativeReLU_0.07': ActivationFunction(LessNegativeReLU(0.07)),
+                        'LessNegativeReLU_0.09': ActivationFunction(LessNegativeReLU(0.09)),
                     }
     
 if __name__ == '__main__':
@@ -73,12 +72,11 @@ if __name__ == '__main__':
     
     activation_funtions = [
                             ActivationFunction(ReLU()), 
-                            ActivationFunction(LeakyReLU()), 
-                            ActivationFunction(ParametricRELU(0.1)),
-                            ActivationFunction(ParametricRELU(0.2)),
-                            ActivationFunction(ParametricRELU(0.3)),
-                            ActivationFunction(ParametricRELU(0.4)),
-                            ActivationFunction(ParametricRELU(0.5)),
+                            ActivationFunction(LeakyReLU()),
+                            ActivationFunction(LessNegativeReLU(0.03)),
+                            ActivationFunction(LessNegativeReLU(0.05)),
+                            ActivationFunction(LessNegativeReLU(0.07)),
+                            ActivationFunction(LessNegativeReLU(0.09)),
                         ]
     for afs in activation_funtions:
         afs.plot_activaition_function()

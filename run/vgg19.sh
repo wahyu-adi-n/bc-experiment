@@ -21,8 +21,8 @@ python main.py \
 python main.py \
     --task binary \
     --net VGG19 \
-    --activation ParametricReLU_0.1 \
-    --output_dir ./output/Select/VGG19-bin-prelu-1 \
+    --activation LessNegativeReLU_0.03 \
+    --output_dir ./output/Select/VGG19-bin-lnrelu-3 \
     --batch_size 32 \
     --lr 1e-4 \
     --resume
@@ -30,8 +30,8 @@ python main.py \
 python main.py \
     --task binary \
     --net VGG19 \
-    --activation ParametricReLU_0.2 \
-    --output_dir ./output/Select/VGG19-bin-prelu-2 \
+    --activation LessNegativeReLU_0.05 \
+    --output_dir ./output/Select/VGG19-bin-lnrelu-5 \
     --batch_size 32 \
     --lr 1e-4 \
     --resume
@@ -39,8 +39,8 @@ python main.py \
 python main.py \
     --task binary \
     --net VGG19 \
-    --activation ParametricReLU_0.3 \
-    --output_dir ./output/Select/VGG19-bin-prelu-3 \
+    --activation LessNegativeReLU_0.07 \
+    --output_dir ./output/Select/VGG19-bin-lnrelu-7 \
     --batch_size 32 \
     --lr 1e-4 \
     --resume
@@ -48,17 +48,8 @@ python main.py \
 python main.py \
     --task binary \
     --net VGG19 \
-    --activation ParametricReLU_0.4 \
-    --output_dir ./output/Select/VGG19-bin-prelu-4 \
-    --batch_size 32 \
-    --lr 1e-4 \
-    --resume
-
-python main.py \
-    --task binary \
-    --net VGG19 \
-    --activation ParametricReLU_0.5 \
-    --output_dir ./output/Select/VGG19-bin-prelu-5 \
+    --activation LessNegativeReLU_0.09 \
+    --output_dir ./output/Select/VGG19-bin-lnrelu-9 \
     --batch_size 32 \
     --lr 1e-4 \
     --resume
@@ -85,8 +76,8 @@ python main.py \
 python main.py \
     --task subtype \
     --net VGG19 \
-    --activation ParametricReLU_0.1 \
-    --output_dir ./output/Select/VGG19-sub-prelu-1 \
+    --activation LessNegativeReLU_0.03 \
+    --output_dir ./output/Select/VGG19-sub-lnrelu-3 \
     --batch_size 32 \
     --lr 1e-4 \
     --resume
@@ -94,8 +85,8 @@ python main.py \
 python main.py \
     --task subtype \
     --net VGG19 \
-    --activation ParametricReLU_0.2 \
-    --output_dir ./output/Select/VGG19-sub-prelu-2 \
+    --activation LessNegativeReLU_0.05 \
+    --output_dir ./output/Select/VGG19-sub-lnrelu-5 \
     --batch_size 32 \
     --lr 1e-4 \
     --resume
@@ -103,8 +94,8 @@ python main.py \
 python main.py \
     --task subtype \
     --net VGG19 \
-    --activation ParametricReLU_0.3 \
-    --output_dir ./output/Select/VGG19-sub-prelu-3 \
+    --activation LessNegativeReLU_0.07 \
+    --output_dir ./output/Select/VGG19-sub-lnrelu-7 \
     --batch_size 32 \
     --lr 1e-4 \
     --resume
@@ -112,17 +103,8 @@ python main.py \
 python main.py \
     --task subtype \
     --net VGG19 \
-    --activation ParametricReLU_0.4 \
-    --output_dir ./output/Select/VGG19-sub-prelu-4 \
-    --batch_size 32 \
-    --lr 1e-4 \
-    --resume
-
-python main.py \
-    --task subtype \
-    --net VGG19 \
-    --activation ParametricReLU_0.5 \
-    --output_dir ./output/Select/VGG19-sub-prelu-5 \
+    --activation LessNegativeReLU_0.09 \
+    --output_dir ./output/Select/VGG19-sub-lnrelu-9 \
     --batch_size 32 \
     --lr 1e-4 \
     --resume
