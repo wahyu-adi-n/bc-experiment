@@ -3,7 +3,7 @@ from config import GAMMA, SEED, STEP_SIZE, INV_LABEL_DICTS
 from datasets import num_classes_dict
 from datetime import datetime
 from networks import network_dict
-from support import plot_confusion_matrix
+from visualization import plot_confusion_matrix, plot_acc_loss_curve
 from torch.utils.data import DataLoader
 from torch import nn, optim
 # from torchinfo import summary
@@ -78,7 +78,7 @@ def main(args):
     os.makedirs(args.output_dir, exist_ok=True)
     if not args.eval:
         start_training = time.time()
-        do_train(model, train_loader, criterion, optimizer, args.epoch, args.output_dir, args.best_metric,
+        history = do_train(model, train_loader, criterion, optimizer, args.epoch, args.output_dir, args.best_metric,
                 scheduler = scheduler,
                 val_loader= valid_loader, 
                 ckpt = args.ckpt,
@@ -112,8 +112,12 @@ def main(args):
         f.write(f'auroc: {metrics["auroc"]}\n')
         f.write(f'confusion matrix:\n')
         f.write(f'{metrics["confusion_matrix"]}\n')
-    
-    plot_confusion_matrix(INV_LABEL_DICTS[args.task], metrics["confusion_matrix"], args.output_dir)
+        
+    epochs = range(1, len(history['train_loss_savings']) + 1)
+    # Plot confusion matrix
+    plot_confusion_matrix(INV_LABEL_DICTS[args.task], metrics["confusion_matrix"],  str(args.output_dir).split("/")[-1], args.output_dir)
+    # Plot accuracy
+    plot_acc_loss_curve(epochs, history, str(args.output_dir).split("/")[-1], args.output_dir)
     
     result_header = 'output_dir, model_name, created_at, acc_macro, acc_micro, prec_macro, prec_micro, rec_macro, rec_micro, f1_macro, f1_micro, auroc\n'
     with open('artifact/result.csv', 'a') as f:

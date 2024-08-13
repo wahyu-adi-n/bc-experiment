@@ -10,7 +10,13 @@ device = DEVICE
 
 def do_train(model, train_loader, criterion, optimizer, epoch, output_dir, best_metric,
             scheduler = None, val_loader = None, ckpt = None, resume = False):
-
+    
+    history = {
+        'train_loss_savings' : [],
+        'train_acc_savings' : [],
+        'val_loss_savings'  : [],
+        'val_acc_savings' : []
+    }
     start_epoch = 0
     best_metric_value = -1
     # start ckpt not specified, try to load last ckpt
@@ -42,6 +48,11 @@ def do_train(model, train_loader, criterion, optimizer, epoch, output_dir, best_
                 (output_dir, cur_epoch, 0, 0)
 
         model.train()
+        
+        running_loss = 0.0
+        correct_predictions = 0
+        total_predictions = 0
+        
         for i, data in pbar:
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data
@@ -61,6 +72,11 @@ def do_train(model, train_loader, criterion, optimizer, epoch, output_dir, best_
             optimizer.step()
 
             running_loss = loss.item()
+            
+            # Calculate accuracy
+            _, preds = torch.max(outputs, 1)
+            correct_predictions += torch.sum(preds == labels).item()
+            total_predictions += labels.size(0)
 
             pbar.desc = '[%s: epoch %2d, batch %3d] loss: %.5f' % \
                 (output_dir, cur_epoch, i + 1, running_loss)
@@ -71,6 +87,11 @@ def do_train(model, train_loader, criterion, optimizer, epoch, output_dir, best_
         if scheduler:
             scheduler.step()
         pbar.close()
+        
+        train_accuracy = correct_predictions / total_predictions
+        history['train_acc_savings'].append(train_accuracy)
+        history['train_loss_savings'].append(running_loss / len(train_loader))
+        writer.add_scalar("train/Accuracy", train_accuracy, global_step=cur_epoch)
         
         if val_loader:
             print("evaluating")
@@ -100,8 +121,12 @@ def do_train(model, train_loader, criterion, optimizer, epoch, output_dir, best_
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'scheduler_state_dict': scheduler.state_dict() if scheduler else None}, os.path.join(output_dir, 'ckpt', 'last.pth'))
-
+        
+        history['val_acc_savings'].append(metrics['acc']['macro'])
+        history['val_loss_savings'].append(eval_loss)
+        
     writer.close()
+    return history
 
 
 def do_eval(model, eval_loader, ckpt_path = None, loss_criterion = None):
