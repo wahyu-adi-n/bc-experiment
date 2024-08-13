@@ -6,3 +6,5 @@ torchvision==0.15.2
 tqdm==4.66.3
 torchinfo
 seaborn
+grad-cam
+shap

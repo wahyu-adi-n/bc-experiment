@@ -13,6 +13,7 @@ from train_eval import do_train, do_eval
 import argparse
 import datasets
 import os
+import pandas as pd
 import time
 import torch
 
@@ -114,6 +115,7 @@ def main(args):
         f.write(f'{metrics["confusion_matrix"]}\n')
         
     epochs = range(1, len(history['train_loss_savings']) + 1)
+    history['epoch'] = epochs; df = pd.DataFrame(history); df.to_csv(f"{args.output_dir}/log_training_eval.csv", index=False)
     # Plot confusion matrix
     plot_confusion_matrix(INV_LABEL_DICTS[args.task], metrics["confusion_matrix"],  str(args.output_dir).split("/")[-1], args.output_dir)
     # Plot accuracy
