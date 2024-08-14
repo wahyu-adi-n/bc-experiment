@@ -3,7 +3,6 @@ import os
 import cv2
 import numpy as np
 import torch
-from torchvision import models
 from pytorch_grad_cam import (
     GradCAM, HiResCAM, ScoreCAM, GradCAMPlusPlus,
     AblationCAM, XGradCAM, EigenCAM, EigenGradCAM,

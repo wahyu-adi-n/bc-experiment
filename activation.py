@@ -6,29 +6,43 @@ import torch
 import torch.nn as nn
 
 class ReLU(nn.Module):
-    def __init__(self):
+    def __init__(self, inplace=False):
         super(ReLU, self).__init__()
         self.name = 'ReLU'
+        self.inplace = inplace
         
     def forward(self, x):
-        return torch.maximum(torch.tensor(0.0), x)
+        if self.inplace:
+            return x.clamp_(min=0)  # In-place operation
+        else:
+            return torch.maximum(torch.tensor(0.0), x)
 
 class LeakyReLU(nn.Module):
-    def __init__(self):
+    def __init__(self, a=0.01, inplace=False):
         super(LeakyReLU, self).__init__()
-        self.name = 'LeakyRELU'
+        self.name = 'LeakyReLU'
+        self.a = a
+        self.inplace = inplace
         
-    def forward(self, x, a = 0.01):
-        return torch.maximum(x*a, x)
+    def forward(self, x):
+        if self.inplace:
+            return x.mul_(self.a).clamp_(min=0).add_(torch.minimum(x, torch.tensor(0.0)))
+        else:
+            return torch.maximum(x * self.a, x)
 
 class LessNegativeReLU(nn.Module):
-    def __init__(self, a):
+    def __init__(self, a, inplace=False):
         super(LessNegativeReLU, self).__init__()
         self.name = f'LessNegativeReLU {a}'
         self.a = a
+        self.inplace = inplace
         
     def forward(self, x):
-        return torch.maximum(x*self.a, x)
+        if self.inplace:
+            x.mul_(self.a).add_(torch.maximum(torch.zeros_like(x), x)).sub_(torch.maximum(torch.zeros_like(x), x*self.a))
+            return x
+        else:
+            return torch.maximum(x * self.a, x)
         
         
 class ActivationFunction():
@@ -50,21 +64,21 @@ class ActivationFunction():
         plt.figure(figsize=(12, 8))
         plt.plot(self.x, self.y)
         plt.grid(True)
-        plt.title(f'{self.activation_module.name} Activation Function')
-        plt.xlabel('x')
-        plt.ylabel('y')
+        plt.title(f'{self.activation_module.name} Activation Function', fontsize=16)
+        plt.xlabel('x', fontsize=14)
+        plt.ylabel('y', fontsize=14)
         plt.savefig(f'{SAVE_AFS_PLOTTING}/{self.activation_module.name} Activation Function Plotting.png', 
                     format='png')
         plt.close()
 
 activation_dict = {    
-                        'ReLU': ActivationFunction(ReLU()),
-                        'LeakyReLU' : ActivationFunction(LeakyReLU()),
-                        'LessNegativeReLU_0.03': ActivationFunction(LessNegativeReLU(0.03)),
-                        'LessNegativeReLU_0.05': ActivationFunction(LessNegativeReLU(0.05)),
-                        'LessNegativeReLU_0.07': ActivationFunction(LessNegativeReLU(0.07)),
-                        'LessNegativeReLU_0.09': ActivationFunction(LessNegativeReLU(0.09)),
-                    }
+                        'ReLU': ActivationFunction(ReLU(inplace=True)),
+                        'LeakyReLU' : ActivationFunction(LeakyReLU(inplace=True)),
+                        'LessNegativeReLU_0.03': ActivationFunction(LessNegativeReLU(0.03, inplace=True)),
+                        'LessNegativeReLU_0.05': ActivationFunction(LessNegativeReLU(0.05, inplace=True)),
+                        'LessNegativeReLU_0.07': ActivationFunction(LessNegativeReLU(0.07, inplace=True)),
+                        'LessNegativeReLU_0.09': ActivationFunction(LessNegativeReLU(0.09, inplace=True)),
+                  }
     
 if __name__ == '__main__':
     if os.path.exists(SAVE_AFS_PLOTTING):
