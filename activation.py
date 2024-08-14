@@ -6,43 +6,30 @@ import torch
 import torch.nn as nn
 
 class ReLU(nn.Module):
-    def __init__(self, inplace=False):
+    def __init__(self):
         super(ReLU, self).__init__()
         self.name = 'ReLU'
-        self.inplace = inplace
         
     def forward(self, x):
-        if self.inplace:
-            return x.clamp_(min=0)  # In-place operation
-        else:
-            return torch.maximum(torch.tensor(0.0), x)
+        return torch.maximum(torch.tensor(0.0), x)
 
 class LeakyReLU(nn.Module):
-    def __init__(self, a=0.01, inplace=False):
+    def __init__(self, a=0.01):
         super(LeakyReLU, self).__init__()
         self.name = 'LeakyReLU'
         self.a = a
-        self.inplace = inplace
         
     def forward(self, x):
-        if self.inplace:
-            return x.mul_(self.a).clamp_(min=0).add_(torch.minimum(x, torch.tensor(0.0)))
-        else:
-            return torch.maximum(x * self.a, x)
+        return torch.maximum(x * self.a, x)
 
 class LessNegativeReLU(nn.Module):
-    def __init__(self, a, inplace=False):
+    def __init__(self, a):
         super(LessNegativeReLU, self).__init__()
         self.name = f'LessNegativeReLU {a}'
         self.a = a
-        self.inplace = inplace
         
     def forward(self, x):
-        if self.inplace:
-            x.mul_(self.a).add_(torch.maximum(torch.zeros_like(x), x)).sub_(torch.maximum(torch.zeros_like(x), x*self.a))
-            return x
-        else:
-            return torch.maximum(x * self.a, x)
+        return torch.maximum(x * self.a, x)
         
         
 class ActivationFunction():
@@ -72,12 +59,12 @@ class ActivationFunction():
         plt.close()
 
 activation_dict = {    
-                        'ReLU': ActivationFunction(ReLU(inplace=True)),
-                        'LeakyReLU' : ActivationFunction(LeakyReLU(inplace=True)),
-                        'LessNegativeReLU_0.03': ActivationFunction(LessNegativeReLU(0.03, inplace=True)),
-                        'LessNegativeReLU_0.05': ActivationFunction(LessNegativeReLU(0.05, inplace=True)),
-                        'LessNegativeReLU_0.07': ActivationFunction(LessNegativeReLU(0.07, inplace=True)),
-                        'LessNegativeReLU_0.09': ActivationFunction(LessNegativeReLU(0.09, inplace=True)),
+                        'ReLU': ActivationFunction(ReLU()),
+                        'LeakyReLU' : ActivationFunction(LeakyReLU()),
+                        'LessNegativeReLU_0.03': ActivationFunction(LessNegativeReLU(0.03)),
+                        'LessNegativeReLU_0.05': ActivationFunction(LessNegativeReLU(0.05)),
+                        'LessNegativeReLU_0.07': ActivationFunction(LessNegativeReLU(0.07)),
+                        'LessNegativeReLU_0.09': ActivationFunction(LessNegativeReLU(0.09)),
                   }
     
 if __name__ == '__main__':
