@@ -58,8 +58,9 @@ def main(args):
     
     num_classes = num_classes_dict[args.task]
     model = network_dict[args.net](num_classes=num_classes)
-    activation_function = activation_dict[args.activation]
-    activation_function.replace_activation_function(model)
+    if args.custom_afs:
+        activation_function = activation_dict[args.activation]
+        activation_function.replace_activation_function(model)
     # summary(model, 
     #         (3, 224, 224), 
     #         batch_dim = 0, 
@@ -154,7 +155,8 @@ if __name__ == '__main__':
     parser.add_argument('--task', type=str, required=True, help='task type')
     parser.add_argument('--net', type=str, required=True, help='network class')
     parser.add_argument('--output_dir', type=str, required=True, help='output directory')
-    parser.add_argument('--activation', type=str, required=True, help='activation function')
+    parser.add_argument('--custom_afs', action='store_true', help='use custom activation funtion or not')
+    parser.add_argument('--activation', type=str, help='activation function')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
     parser.add_argument('--epoch', type=int, default=20, help='epoch')
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate')
