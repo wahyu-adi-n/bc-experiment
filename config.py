@@ -1,5 +1,7 @@
 # normalization.py
 N_CHANNELS = 3
+MEAN = [0.7862, 0.6261, 0.7654] 
+STD = [0.1065, 0.1396, 0.0910]
 
 # datasets.py
 CSV_PATH = './artifact/mysplit.csv'

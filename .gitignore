@@ -2,6 +2,6 @@
 /dataset
 /output
 README.md
-__pycache__
+**pycache**
 .ipynb_checkpoints/
 *.png

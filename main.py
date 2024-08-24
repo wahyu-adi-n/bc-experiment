@@ -1,5 +1,5 @@
 from activation import activation_dict
-from config import GAMMA, SEED, STEP_SIZE, INV_LABEL_DICTS
+from config import GAMMA, SEED, STEP_SIZE, INV_LABEL_DICTS, MEAN, STD
 from datasets import num_classes_dict
 from datetime import datetime
 from networks import network_dict
@@ -43,7 +43,7 @@ def main(args):
                 T.ToTensor(),
                 # T.Normalize((0.5,), (0.5,)),
                 # T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)), # ImageNet normalization
-                T.Normalize((0.7862, 0.6261, 0.7654), (0.1065, 0.1396, 0.0910)), # BreakHis normalization
+                T.Normalize(mean=MEAN, std=STD), # BreakHis normalization
             ]
         )
 
@@ -52,7 +52,7 @@ def main(args):
                 T.Resize((256, 256), antialias=True),  # default => (460, 700)
                 T.CenterCrop(size=(224, 224)),
                 T.ToTensor(),
-                T.Normalize((0.7862, 0.6261, 0.7654), (0.1065, 0.1396, 0.0910)), # BreakHis normalization
+                T.Normalize(mean=MEAN, std=STD), # BreakHis normalization
             ]
     )
     
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     parser.add_argument('--task', type=str, required=True, help='task type')
     parser.add_argument('--net', type=str, required=True, help='network class')
     parser.add_argument('--output_dir', type=str, required=True, help='output directory')
-    parser.add_argument('--custom_afs', action='store_true', help='use custom activation funtion or not')
+    parser.add_argument('--custom_afs', type=bool, required=True, default=True, help='use custom activation funtion or not')
     parser.add_argument('--activation', type=str, help='activation function')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
     parser.add_argument('--epoch', type=int, default=20, help='epoch')

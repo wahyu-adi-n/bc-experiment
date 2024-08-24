@@ -1,3 +1,4 @@
+CUDA_VISIBLE_DEVICES=0
 python main.py \
     --task binary \
     --net DenseNet121 \

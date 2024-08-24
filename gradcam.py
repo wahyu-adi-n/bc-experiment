@@ -12,27 +12,13 @@ from pytorch_grad_cam import GuidedBackpropReLUModel
 from pytorch_grad_cam.utils.image import (
     show_cam_on_image, deprocess_image, preprocess_image
 )
-from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
-from networks import *
-
+from config import MEAN, STD
+from datasets import num_classes_dict
+from networks import network_dict
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--device', type=str, default='cpu',
-                        help='Torch device to use')
-    parser.add_argument(
-        '--image-path',
-        type=str,
-        default='./examples/both.png',
-        help='Input image path')
-    parser.add_argument('--aug-smooth', action='store_true',
-                        help='Apply test time augmentation to smooth the CAM')
-    parser.add_argument(
-        '--eigen-smooth',
-        action='store_true',
-        help='Reduce noise by taking the first principle component'
-        'of cam_weights*activations')
-    parser.add_argument('--method', type=str, default='gradcam',
+    parser.add_argument('--method', required=True, type=str, default='gradcam',
                         choices=[
                             'gradcam', 'hirescam', 'gradcam++',
                             'scorecam', 'xgradcam', 'ablationcam',
@@ -40,9 +26,14 @@ def get_args():
                             'fullgrad', 'gradcamelementwise'
                         ],
                         help='CAM method')
-
-    parser.add_argument('--output-dir', type=str, default='output',
-                        help='Output directory to save the images')
+    parser.add_argument('--task', type=str, required=True, help='task type')
+    parser.add_argument('--net', type=str, required=True, help='network class')
+    parser.add_argument('--output-dir', required=True, type=str, default='output', help='Output directory to save the images')
+    parser.add_argument('--image-path', required=True, type=str, default='./examples/both.png', help='Input image path')
+    parser.add_argument('--device', type=str, default='cuda', help='Torch device to use')
+    parser.add_argument('--aug-smooth', action='store_true',
+                        help='Apply test time augmentation to smooth the CAM')
+    parser.add_argument('--eigen-smooth', action='store_true', help='Reduce noise by taking the first principle component''of cam_weights*activations')
     args = parser.parse_args()
     
     if args.device:
@@ -51,7 +42,6 @@ def get_args():
         print('Using CPU for computation')
 
     return args
-
 
 if __name__ == '__main__':
     """ python cam.py -image-path <path_to_image>
@@ -75,9 +65,10 @@ if __name__ == '__main__':
         "fullgrad": FullGrad,
         "gradcamelementwise": GradCAMElementWise
     }
-    ckpt_path = "/home/delameta/Research/BC/experiment/output/Select/Test-DenseNet121-bin-relu/ckpt/best.pth"
+    ckpt_path = f"{args.output_dir}/ckpt/best.pth"; print(ckpt_path)
     ckpt = torch.load(ckpt_path)
-    model = DenseNet121(num_classes=2)
+    num_classes = num_classes_dict[args.task]
+    model = network_dict[args.net](num_classes=num_classes)
     model.load_state_dict(ckpt['model_state_dict'])
     model.to(torch.device(args.device)).eval()
 
@@ -98,9 +89,7 @@ if __name__ == '__main__':
 
     rgb_img = cv2.imread(args.image_path, 1)[:, :, ::-1]
     rgb_img = np.float32(rgb_img) / 255
-    input_tensor = preprocess_image(rgb_img,
-                                    mean=[0.485, 0.456, 0.406],
-                                    std=[0.229, 0.224, 0.225]).to(args.device)
+    input_tensor = preprocess_image(rgb_img, mean=MEAN, std=STD).to(args.device)
 
     # We have to specify the target we want to generate
     # the Class Activation Maps for.
@@ -113,8 +102,7 @@ if __name__ == '__main__':
     # Using the with statement ensures the context is freed, and you can
     # recreate different CAM objects in a loop.
     cam_algorithm = methods[args.method]
-    with cam_algorithm(model=model,
-                       target_layers=target_layers) as cam:
+    with cam_algorithm(model=model, target_layers=target_layers) as cam:
 
         # AblationCAM and ScoreCAM have batched implementations.
         # You can override the internal batch size for faster computation.
@@ -138,9 +126,9 @@ if __name__ == '__main__':
 
     os.makedirs(args.output_dir, exist_ok=True)
 
-    cam_output_path = os.path.join(args.output_dir, f'{args.method}_cam.jpg')
-    gb_output_path = os.path.join(args.output_dir, f'{args.method}_gb.jpg')
-    cam_gb_output_path = os.path.join(args.output_dir, f'{args.method}_cam_gb.jpg')
+    cam_output_path = os.path.join(args.output_dir, f'{args.method}_cam_{os.path.basename(args.image_path)}')
+    gb_output_path = os.path.join(args.output_dir, f'{args.method}_gb_{os.path.basename(args.image_path)}')
+    cam_gb_output_path = os.path.join(args.output_dir, f'{args.method}_cam_gb_{os.path.basename(args.image_path)}')
 
     cv2.imwrite(cam_output_path, cam_image)
     cv2.imwrite(gb_output_path, gb)
