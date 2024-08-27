@@ -1,4 +1,5 @@
 from activation import *
+from kan import KANLinear
 import torch.nn as nn
 import torchvision.models as models
 
@@ -86,6 +87,18 @@ class VGG19(nn.Module):
         x = self.vgg19(x)
         return x 
 
+class ResNet50KAN(nn.Module):
+    def __init__(self, num_classes):
+        super(ResNet50KAN, self).__init__()
+        self.num_classes = num_classes
+        self.resnet = models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
+        num_features = self.resnet.fc.in_features
+        self.resnet.fc = KANLinear(num_features, num_classes)
+        
+    def forward(self, x):
+        x = self.resnet(x)
+        return x
+
 network_dict = {
     'ResNet50': ResNet50,
     'ResNet152': ResNet152,
@@ -93,6 +106,7 @@ network_dict = {
     'DenseNet201': DenseNet201,
     'VGG11': VGG11,
     'VGG19': VGG19,
+    'ResNet50KAN': ResNet50KAN,
 }
 
 if __name__ == '__main__':      
