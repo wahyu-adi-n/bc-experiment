@@ -68,11 +68,7 @@ def main(args):
     #         verbose = 1)
     criterion = nn.CrossEntropyLoss()
     
-    if args.optimizer == 'Adadelta':
-        optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
-    elif args.optimizer == 'Adagrad':
-        optimizer = optim.Adagrad(model.parameters(), lr=args.lr)
-    elif args.optimizer == 'Adam':
+    if args.optimizer == 'Adam':
         optimizer = optim.Adam(model.parameters(), lr=args.lr)
     elif args.optimizer == 'AdamW':
         optimizer = optim.AdamW(model.parameters(), lr=args.lr)
@@ -80,8 +76,6 @@ def main(args):
         optimizer = optim.Adamax(model.parameters(), lr=args.lr)
     elif args.optimizer == 'RMSProp':
         optimizer = optim.RMSprop(model.parameters(), lr=args.lr)
-    elif args.optimizer == 'SGD':
-        optimizer = optim.SGD(model.parameters(), lr=args.lr)
     else:
         raise NotImplementedError
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
