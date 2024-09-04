@@ -41,7 +41,6 @@ opencv-python==4.10.0.84
 packaging==24.1
 pandas==2.1.2
 pillow==10.3.0
-pkg_resources==0.0.0
 protobuf==4.25.4
 pyparsing==3.1.2
 python-dateutil==2.9.0.post0

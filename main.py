@@ -67,7 +67,17 @@ def main(args):
     #         col_names = ('input_size', 'output_size', 'num_params', 'kernel_size', 'mult_adds'), 
     #         verbose = 1)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=args.lr)
+    
+    if args.optimizer == 'Adam':
+        optimizer = optim.Adam(model.parameters(), lr=args.lr)
+    elif args.optimizer == 'AdamW':
+        optimizer = optim.AdamW(model.parameters(), lr=args.lr)
+    elif args.optimizer == 'Adamax':
+        optimizer = optim.Adamax(model.parameters(), lr=args.lr)
+    elif args.optimizer == 'RMSProp':
+        optimizer = optim.RMSprop(model.parameters(), lr=args.lr)
+    else:
+        raise NotImplementedError
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
 
     train_dataset = datasets.BreaKHis(args.task, 'train', magnification = args.mag, transform=train_transform)
@@ -159,6 +169,7 @@ if __name__ == '__main__':
     parser.add_argument('--activation', type=str, help='activation function')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
     parser.add_argument('--epoch', type=int, default=20, help='epoch')
+    parser.add_argument('--optimizer', type=str, default='Adam', help='optimizization algorithm')
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate')
     parser.add_argument('--mag', type=int, default=None, help='magnification')
     parser.add_argument('--ckpt', type=str, default=None, help='checkpoint path')
