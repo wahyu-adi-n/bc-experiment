@@ -86,9 +86,9 @@ class VGG19(nn.Module):
         x = self.vgg19(x)
         return x 
     
-class EfficienNetB0(nn.Module):
+class EfficientNetB0(nn.Module):
     def __init__(self, num_classes):
-        super(EfficienNetB0, self).__init__()
+        super(EfficientNetB0, self).__init__()
         self.num_classes = num_classes
         
         self.effb0 = models.efficientnet_b0(weights=models.EfficientNet_B0_Weights.DEFAULT)
@@ -100,9 +100,9 @@ class EfficienNetB0(nn.Module):
         x = self.effb0(x)
         return x
 
-class EfficienNetB7(nn.Module):
+class EfficientNetB7(nn.Module):
     def __init__(self, num_classes):
-        super(EfficienNetB7, self).__init__()
+        super(EfficientNetB7, self).__init__()
         self.num_classes = num_classes
         
         self.effb7 = models.efficientnet_b7(weights=models.EfficientNet_B7_Weights.DEFAULT)
@@ -117,8 +117,8 @@ class EfficienNetB7(nn.Module):
 network_dict = {
     'DenseNet121': DenseNet121,
     'DenseNet201': DenseNet201,
-    'EfficienNetB0': EfficienNetB0,
-    'EfficientNetB7': EfficienNetB7,
+    'EfficientNetB0': EfficientNetB0,
+    'EfficientNetB7': EfficientNetB7,
     'ResNet50': ResNet50,
     'ResNet152': ResNet152,
     'VGG11': VGG11,
