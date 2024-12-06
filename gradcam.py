@@ -30,7 +30,7 @@ def get_args():
     parser.add_argument('--net', type=str, required=True, help='network class')
     parser.add_argument('--output-dir', required=True, type=str, default='output', help='Output directory to save the images')
     parser.add_argument('--image-path', required=True, type=str, default='./examples/both.png', help='Input image path')
-    parser.add_argument('--device', type=str, default='cuda', help='Torch device to use')
+    parser.add_argument('--device', type=str, default='cpu', help='Torch device to use')
     parser.add_argument('--aug-smooth', action='store_true',
                         help='Apply test time augmentation to smooth the CAM')
     parser.add_argument('--eigen-smooth', action='store_true', help='Reduce noise by taking the first principle component''of cam_weights*activations')

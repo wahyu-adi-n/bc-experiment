@@ -1,4 +1,5 @@
 from activation import *
+from torchinfo import summary
 import torch.nn as nn
 import torchvision.models as models
 
@@ -128,4 +129,11 @@ network_dict = {
 if __name__ == '__main__':      
     model  = network_dict['ResNet50'](2)
     afs = ActivationFunction(LeakyReLU()).replace_activation_function(model)
-    print(model)
+    model.to(torch.device('cpu'))
+    # print(model)
+    summary(model, 
+            (3, 224, 224), 
+            batch_dim = 0, 
+            col_names = ('input_size', 'output_size', 'num_params', 'kernel_size', 'mult_adds'), 
+            verbose = 1,
+            device="cpu")

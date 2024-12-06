@@ -172,9 +172,9 @@ num_classes_dict = {
 
 if __name__ == '__main__':
     for mag in [None, 40, 100, 200, 400]:
-        BreaKHis_generate('binary', 'train', mag)
-        BreaKHis_generate('binary', 'val', mag)
-        BreaKHis_generate('binary', 'test', mag)
+        # BreaKHis_generate('binary', 'train', mag)
+        # BreaKHis_generate('binary', 'val', mag)
+        # BreaKHis_generate('binary', 'test', mag)
         BreaKHis_generate('subtype', 'train', mag)
         BreaKHis_generate('subtype', 'val', mag)
         BreaKHis_generate('subtype', 'test', mag)

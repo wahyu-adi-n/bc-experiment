@@ -1,6 +1,13 @@
-python gradcam.py \
+CUDA_VISIBLE_DEVICES=0 python gradcam.py \
     --method gradcam \
-    --task binary \
-    --net DenseNet121 \
-    --output-dir output/Select/Test-DenseNet121-bin-relu \
-    --image-path /home/delameta/Research/BC/experiment/dataset/BreaKHis_v1/histology_slides/breast/benign/SOB/adenosis/SOB_B_A_14-22549AB/40X/SOB_B_A-14-22549AB-40-001.png
+    --task subtype \
+    --net DenseNet201 \
+    --output-dir output/Select/DenseNet201-sub-lnrelu-3 \
+    --image-path dataset/BreaKHis_v1/histology_slides/breast/malignant/SOB/ductal_carcinoma/SOB_M_DC_14-10926/40X/SOB_M_DC-14-10926-40-011.png
+
+CUDA_VISIBLE_DEVICES=0 python gradcam.py \
+    --method gradcam++ \
+    --task subtype \
+    --net DenseNet201 \
+    --output-dir output/Select/DenseNet201-sub-lnrelu-3 \
+    --image-path dataset/BreaKHis_v1/histology_slides/breast/malignant/SOB/ductal_carcinoma/SOB_M_DC_14-10926/40X/SOB_M_DC-14-10926-40-011.png
